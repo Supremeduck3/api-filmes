@@ -24,22 +24,45 @@ export const create = async (req, res) => {
             });
         }
 
+        const titulo = req.body
         const { title, description, duration, genre, rating, avalible } = req.body;
-        const genero = ['Ação', 'Drama', 'Comédia', 'Terror', 'Romance', 'Animação', 'Ficção Científica', 'Suspense']
+        const genero = [
+            'Ação',
+            'Drama',
+            'Comédia',
+            'Terror',
+            'Romance',
+            'Animação',
+            'Ficção Científica',
+            'Suspense',
+        ];
 
         if (!title) return res.status(400).json({ error: 'O titulo (title) é obrigatório!' });
-        if (!duration) return res.status(400).json({ error: 'A duração (duration) é obrigatória!' });
+        if (!duration)
+            return res.status(400).json({ error: 'A duração (duration) é obrigatória!' });
         if (!genre) return res.status(400).json({ error: 'O genero (genre) é obrigatório!' });
-        if (!description) return res.status(400).json({ error: 'A descrição (description) é obrigatório!' });
+        if (!description)
+            return res.status(400).json({ error: 'A descrição (description) é obrigatório!' });
         if (!rating) return res.status(400).json({ error: 'A avaliação (rating) é obrigatória!' });
-        if (!avalible) return res.status(400).json({ error: 'A disponiblidade (avalible) é obrigatória!' });
-        if (title.length <= 3) return res.status(400).json({error: 'o titulo deve conter mais de 3 caracteres'});
-        if (description.length <= 10) return res.status(400).json({ error: 'A descrição deve conter mais de 10 caracteres' });
-        if (duration.length < 0 && duration.length > 300) return res.status(400).json({ error: 'A duração não pode ser negativa' });
-        if (!genero.includes(genre)) return res.status(400).json({ error: 'Deve ser um genero disponivel Ação, Drama, Comédia, Terror, Romance, Animação, Ficção Científica, Suspense' });
-        if (rating <= 0 || rating > 10) return res.status(400).json({ error: 'Deve estar entre 0 e 10' });;
-        if (avalible != true)return res.status(400).json({ error: 'Deve estar disponivel' });
-
+        if (!avalible)
+            return res.status(400).json({ error: 'A disponiblidade (avalible) é obrigatória!' });
+        if (title.length <= 3)
+            return res.status(400).json({ error: 'o titulo deve conter mais de 3 caracteres' });
+        if (description.length <= 10)
+            return res.status(400).json({ error: 'A descrição deve conter mais de 10 caracteres' });
+        if (duration.length < 0 || duration.length > 300)
+            return res.status(400).json({ error: 'A duração não pode ser negativa' });
+        if (!genero.includes(genre))
+            return res
+                .status(400)
+                .json({
+                    error: 'Deve ser um genero disponivel Ação, Drama, Comédia, Terror, Romance, Animação, Ficção Científica, Suspense',
+                });
+        if (rating <= 0 || rating > 10)
+            return res.status(400).json({ error: 'Deve estar entre 0 e 10' });
+        if (avalible != true) return res.status(400).json({ error: 'Deve estar disponivel' });
+        if (title )
+            return res.status(400).json({ error: 'titulo duplicado' });
 
         const data = await model.create({
             title,
