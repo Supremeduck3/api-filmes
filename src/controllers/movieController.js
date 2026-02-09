@@ -37,7 +37,7 @@ export const create = async (req, res) => {
         if (description.length <= 10) return res.status(400).json({ error: 'A descrição deve conter mais de 10 caracteres' });
         if (duration.length < 0 && duration.length > 300) return res.status(400).json({ error: 'A duração não pode ser negativa' });
         if (!genero.includes(genre)) return res.status(400).json({ error: 'Deve ser um genero disponivel Ação, Drama, Comédia, Terror, Romance, Animação, Ficção Científica, Suspense' });
-        if (rating.length <= 0 && rating.length > 10) return res.status(400).json({ error: 'Deve estar entre 0 e 10' });;
+        if (rating <= 0 || rating > 10) return res.status(400).json({ error: 'Deve estar entre 0 e 10' });;
         if (avalible != true)return res.status(400).json({ error: 'Deve estar disponivel' });
 
 
