@@ -1,4 +1,5 @@
 import * as model from '../models/movieModel.js';
+import prisma from '../utils/prismaClient.js';
 
 export const getAll = async (req, res) => {
     try {
@@ -25,6 +26,7 @@ export const create = async (req, res) => {
         }
 
         const titulo = req.body
+        const values = Object.values(titulo);
         const { title, description, duration, genre, rating, avalible } = req.body;
         const genero = [
             'Ação',
@@ -61,8 +63,17 @@ export const create = async (req, res) => {
         if (rating <= 0 || rating > 10)
             return res.status(400).json({ error: 'Deve estar entre 0 e 10' });
         if (avalible != true) return res.status(400).json({ error: 'Deve estar disponivel' });
-        if (title )
-            return res.status(400).json({ error: 'titulo duplicado' });
+
+        const filmeExistente = await prisma.movie.findFirst({
+            where: {
+                title: {
+                    equals: title,
+                    mode: 'insensitive',
+                },
+            },
+        });
+
+        if(filmeExistente)return res.status(400).json({error: 'filme duplicado'})
 
         const data = await model.create({
             title,
